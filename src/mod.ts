@@ -5,7 +5,7 @@ import type { ManifestLike, InternalConfig, ExtismPluginOptions, Plugin } from '
 import { toWasmModuleData as _toWasmModuleData } from './manifest.ts';
 
 import { createForegroundPlugin as _createForegroundPlugin } from './foreground-plugin.ts';
-import { createBackgroundPlugin as _createBackgroundPlugin } from './background-plugin.ts';
+// import { createBackgroundPlugin as _createBackgroundPlugin } from './background-plugin.ts';
 
 export { CAPABILITIES } from './polyfills/deno-capabilities.ts';
 
@@ -101,7 +101,7 @@ export async function createPlugin(
     sharedArrayBufferSize: Number(opts.sharedArrayBufferSize) || 1 << 16,
   };
 
-  return (opts.runInWorker ? _createBackgroundPlugin : _createForegroundPlugin)(ic, names, moduleData);
+  return (_createForegroundPlugin)(ic, names, moduleData);
 }
 
 export { createPlugin as newPlugin };
