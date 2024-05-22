@@ -673,9 +673,9 @@ export default class Context {
         memoryView.setUint8(offset, entry.type!);
         memoryView.setUint16(offset + 2, entry.flags!, true);
         // TODO(bartlomieju)
-        memoryView.setBigUint64(offset + 8, 0n, true);
+        memoryView.setBigUint64(offset + 8, BigInt(0), true);
         // TODO(bartlomieju)
-        memoryView.setBigUint64(offset + 16, 0n, true);
+        memoryView.setBigUint64(offset + 16, BigInt(0), true);
 
         return ERRNO_SUCCESS;
       }),
@@ -1433,7 +1433,7 @@ export default class Context {
         const read = RIGHTS_FD_READ |
           RIGHTS_FD_READDIR;
 
-        if ((rightsBase & read) !== 0n) {
+        if ((rightsBase & read) !== BigInt(0)) {
           options.read = true;
         }
 
@@ -1442,7 +1442,7 @@ export default class Context {
           RIGHTS_FD_ALLOCATE |
           RIGHTS_FD_FILESTAT_SET_SIZE;
 
-        if ((rightsBase & write) !== 0n) {
+        if ((rightsBase & write) !== BigInt(0)) {
           options.write = true;
         }
 
