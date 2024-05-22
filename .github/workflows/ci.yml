@@ -60,7 +60,7 @@ jobs:
         just prepare
         just docs
     - name: Packaging...
-      run: tar czf kubectl-karmada-${{ matrix.goos }}-${{ matrix.goarch }}.tgz kubectl-karmada LICENSE
+      run: tar czf kubectl-karmada-${{ matrix.goos }}-${{ matrix.goarch }}.tgz
     - name: Uploading assets...
       if: ${{ !env.ACT }}
       id: upload-release-asset 
