@@ -26,15 +26,15 @@ export class Block {
   }
 
   static indexToAddress(idx: bigint | number): bigint {
-    return BigInt(idx) << 48n;
+    return BigInt(idx) << BigInt(48);
   }
 
   static addressToIndex(addr: bigint | number): number {
-    return Number(BigInt(addr) >> 48n);
+    return Number(BigInt(addr) >> BigInt(48));
   }
 
   static maskAddress(addr: bigint | number): number {
-    return Number(BigInt(addr) & ((1n << 48n) - 1n));
+    return Number(BigInt(addr) & BigInt((1 << 48) - 1));
   }
 }
 
@@ -101,7 +101,7 @@ export class CallContext {
   setVariable(name: string, value: string | Uint8Array): bigint {
     const newIdx = this[STORE](value);
     if (newIdx === null) {
-      return 0n;
+      return BigInt(0);
     }
 
     // Re-use the old address mapping.
@@ -156,7 +156,7 @@ export class CallContext {
     const blockIdx = Block.addressToIndex(addr);
     const block = this.#blocks[blockIdx];
     if (!block) {
-      return 0n;
+      return BigInt(0);
     }
     return BigInt(block.buffer.byteLength);
   }
@@ -246,7 +246,7 @@ export class CallContext {
       const item = this.read(addr);
 
       if (item === null) {
-        return 0n;
+        return BigInt(0);
       }
 
       const key = item.string();
@@ -255,31 +255,31 @@ export class CallContext {
         return this.store(this.#config[key]);
       }
 
-      return 0n;
+      return BigInt(0);
     },
 
     var_get: (addr: bigint): bigint => {
       const item = this.read(addr);
 
       if (item === null) {
-        return 0n;
+        return BigInt(0);
       }
 
       const key = item.string();
-      return this.#vars.has(key) ? Block.indexToAddress(this.#vars.get(key) as number) : 0n;
+      return this.#vars.has(key) ? Block.indexToAddress(this.#vars.get(key) as number) : BigInt(0);
     },
 
-    var_set: (addr: bigint, valueaddr: bigint): 0n | undefined => {
+    var_set: (addr: bigint, valueaddr: bigint): 0 | undefined => {
       const item = this.read(addr);
 
       if (item === null) {
-        return 0n;
+        return 0;
       }
 
       const key = item.string();
-      if (valueaddr === 0n) {
+      if (valueaddr === BigInt(0)) {
         this.#vars.delete(key);
-        return 0n;
+        return 0;
       }
 
       this.#vars.set(key, Block.addressToIndex(valueaddr));
@@ -287,7 +287,7 @@ export class CallContext {
 
     http_request: (_requestOffset: bigint, _bodyOffset: bigint): bigint => {
       this.#logger.error('http_request is not enabled');
-      return 0n;
+      return BigInt(0);
     },
 
     http_status_code: (): number => {
